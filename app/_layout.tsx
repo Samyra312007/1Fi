@@ -10,6 +10,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="profile-details" />
         <Stack.Screen name="purchases" />
+        <Stack.Screen name="pledge-history" />
       </Stack>
     </>
   );

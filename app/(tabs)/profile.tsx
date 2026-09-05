@@ -34,6 +34,7 @@ export default function ProfileScreen() {
     subtitle: 'Funds you pledged or released',
     icon: 'heart-outline',
     iconBackgroundColor: Colors.primaryLight,
+    onPress: () => router.push('/pledge-history'),
   },
   {
     id: 'invite',
