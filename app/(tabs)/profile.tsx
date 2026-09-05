@@ -52,6 +52,7 @@ export default function ProfileScreen() {
     subtitle: 'Find answers or contact us',
     icon: 'help-circle-outline',
     iconBackgroundColor: Colors.primaryLight,
+    onPress: () => router.push('/support-faqs'),
   },
   {
     id: 'privacy',
@@ -59,6 +60,7 @@ export default function ProfileScreen() {
     subtitle: 'How we handle your data',
     icon: 'shield-checkmark-outline',
     iconBackgroundColor: Colors.primaryLight,
+    onPress: () => router.push('/privacy-policy'),
   },
   {
     id: 'terms',
@@ -66,6 +68,7 @@ export default function ProfileScreen() {
     subtitle: 'Rules governing your use',
     icon: 'document-text-outline',
     iconBackgroundColor: Colors.primaryLight,
+    onPress: () => router.push('/terms-conditions'),
   },
   ];
 

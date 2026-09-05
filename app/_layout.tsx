@@ -12,6 +12,9 @@ export default function RootLayout() {
         <Stack.Screen name="purchases" />
         <Stack.Screen name="pledge-history" />
         <Stack.Screen name="refer-earn" />
+        <Stack.Screen name="support-faqs" />
+        <Stack.Screen name="privacy-policy" />
+        <Stack.Screen name="terms-conditions" />
       </Stack>
     </>
   );
