@@ -5,11 +5,32 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Colors, Spacing, BorderRadius, FontSize } from '../src/constants/theme';
 
-type Category = 'intro' | 'using_1fi';
+type Category = 'intro' | 'using_1fi' | 'repayment' | 'returns' | 'safety';
 
 interface FAQItem {
   question: string;
   answer: string;
+}
+
+function parseAnswer(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*|__[^_]+__)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <Text key={i} style={{ fontWeight: '700', color: Colors.text }}>
+          {part.slice(2, -2)}
+        </Text>
+      );
+    }
+    if (part.startsWith('__') && part.endsWith('__')) {
+      return (
+        <Text key={i} style={{ textDecorationLine: 'underline', color: Colors.text }}>
+          {part.slice(2, -2)}
+        </Text>
+      );
+    }
+    return <Text key={i}>{part}</Text>;
+  });
 }
 
 const FAQ_DATA: Record<Category, { section: string; items: FAQItem[] }> = {
@@ -82,28 +103,95 @@ const FAQ_DATA: Record<Category, { section: string; items: FAQItem[] }> = {
     section: '2. Using 1Fi & Merchants',
     items: [
       {
-        question: 'How do I make a purchase?',
-        answer: 'Select 1Fi at checkout on the 1Fi app or at partner stores. Choose your EMI tenure and confirm with OTP.',
+        question: 'How does a purchase work end to end?',
+        answer: 'Choose an EMI plan, lien is placed, lender approves, merchant gets paid, and you repay monthly.',
+      },
+      {
+        question: 'What verification happens when I sign up?',
+        answer: 'When you sign up, we verify your identity through PAN, Aadhaar OTP, and check your mutual fund holdings to determine your eligible credit limit.',
+      },
+      {
+        question: 'What happens after I confirm a purchase?',
+        answer: 'A lien is marked on your selected mutual funds, lender releases funds to the merchant, and your EMI schedule is generated.',
       },
       {
         question: 'Where can I use 1Fi?',
-        answer: 'You can use 1Fi at any partner merchant listed in the 1Fi app. The merchant network is growing rapidly.',
+        answer: 'Use 1Fi at approved partner merchants shown in the app or wherever 1Fi appears at checkout.',
       },
       {
-        question: 'Is there a spending limit?',
-        answer: 'Your spending limit is based on the value of your pledged mutual funds and the applicable LTV ratio.',
+        question: 'Can I make multiple purchases?',
+        answer: 'Yes, you can make multiple purchases as long as you have sufficient available credit limit. Each purchase will have its own EMI schedule.',
       },
       {
-        question: 'How do EMI payments work?',
-        answer: 'EMI payments are auto-debited from your linked bank account on the due date each month.',
+        question: 'What does no-cost EMI mean?',
+        answer: 'No-cost EMI means you pay 0% interest. You only repay the principal amount in EMIs.',
       },
       {
-        question: 'Can I prepay my loan?',
-        answer: 'Yes. You can prepay your loan anytime without any prepayment charges.',
+        question: 'Are there any hidden fees?',
+        answer: 'No. We are fully transparent and do not charge processing, penal, bounce, foreclosure, setup, or lien-related charges.',
       },
       {
-        question: 'What happens if I miss an EMI?',
-        answer: 'A late fee may be charged. Missing multiple EMIs may result in partial liquidation of your pledged units.',
+        question: 'What EMI tenures are available?',
+        answer: 'EMI tenures typically range from 3 to 24 months depending on the product, merchant, and your eligibility. Available options are shown at checkout.',
+      },
+    ],
+  },
+  repayment: {
+    section: '3. Repayment & Account',
+    items: [
+      {
+        question: 'How do repayments work?',
+        answer: 'Repayments are auto-debited from your linked bank account via NACH mandate on the due date each month. You can also make manual prepayments through the app.',
+      },
+      {
+        question: 'Can I pay early without any charges?',
+        answer: 'Yes. You can prepay your loan anytime without any prepayment charges or penalties.',
+      },
+      {
+        question: 'When is the lien removed?',
+        answer: 'Once you fully repay the loan, lien release is initiated within 30 days. Final timing depends on MFCentral/MF-RTA.',
+      },
+      {
+        question: 'Are there any charges if I pay early to release my pledged mutual fund units?',
+        answer: 'No. There are no charges for early repayment. Your pledged units are released once the outstanding amount is cleared.',
+      },
+    ],
+  },
+  returns: {
+    section: '4. Returns & Disputes',
+    items: [
+      {
+        question: 'What if I return the product?',
+        answer: 'If you return a product purchased through 1Fi, the refund is processed back to reduce your outstanding loan balance. Any EMI already paid will be refunded.',
+      },
+      {
+        question: 'Who handles product disputes?',
+        answer: 'Product disputes are handled by the merchant. 1Fi can assist with escalation if the merchant does not resolve the issue.',
+      },
+    ],
+  },
+  safety: {
+    section: '5. Safety, Rights & Liens',
+    items: [
+      {
+        question: 'Can I cancel after taking the loan?',
+        answer: 'Yes, you get a 3-day cooling-off period for each drawdown to exit without charges.',
+      },
+      {
+        question: 'Is my data safe?',
+        answer: 'Yes. 1Fi uses official verification flows and shares data only for authorised loan, pledge, or regulatory purposes.',
+      },
+      {
+        question: 'Can I stop using 1Fi anytime?',
+        answer: 'Yes. You can stop using 1Fi anytime by repaying your outstanding loan. Once fully repaid, your account will be inactive.',
+      },
+      {
+        question: 'What is a lien?',
+        answer: 'A lien is a hold on selected units. They stay invested and are released after repayment.',
+      },
+      {
+        question: 'Who is the RBI approved lending partner?',
+        answer: 'Loans on 1Fi are provided by **Kalandri Capital Private Limited**, a Non-Banking Financial Company (NBFC) registered with the Reserve Bank of India. 1Fi (Fiquity Technology Private Limited) is the technology platform.\n\n• **RBI Certificate of Registration (CoR) No.** — N-02.00323\n• **CIN** — U65929KA2017PTC107822\n• **Website** — __www.kalandricapital.net__\n\nBecause the lender is an RBI-regulated NBFC, your loan is governed by RBI\'s rules on fair practices, grievance redressal, and Loan-to-Value limits for loans against securities.',
       },
     ],
   },
@@ -112,6 +200,9 @@ const FAQ_DATA: Record<Category, { section: string; items: FAQItem[] }> = {
 const CATEGORIES: { key: Category; label: string }[] = [
   { key: 'intro', label: 'Intro & Eligibility' },
   { key: 'using_1fi', label: 'Using 1Fi & Merchants' },
+  { key: 'repayment', label: 'Repayment & Account' },
+  { key: 'returns', label: 'Returns & Disputes' },
+  { key: 'safety', label: 'Safety, Rights & Liens' },
 ];
 
 export default function SupportFAQsScreen() {
@@ -148,7 +239,11 @@ export default function SupportFAQsScreen() {
           </View>
         </View>
 
-        <View style={styles.categoryTabs}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoryTabs}
+        >
           {CATEGORIES.map((cat) => (
             <TouchableOpacity
               key={cat.key}
@@ -163,7 +258,7 @@ export default function SupportFAQsScreen() {
               </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
 
         <View style={styles.sectionHeader}>
           <View style={styles.sectionBar} />
@@ -193,7 +288,7 @@ export default function SupportFAQsScreen() {
                   </View>
                 </View>
                 {isExpanded && (
-                  <Text style={styles.faqAnswer}>{item.answer}</Text>
+                  <Text style={styles.faqAnswer}>{parseAnswer(item.answer)}</Text>
                 )}
               </TouchableOpacity>
             );
@@ -278,7 +373,6 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
   categoryTabs: {
-    flexDirection: 'row',
     paddingHorizontal: Spacing.lg,
     gap: Spacing.md,
     marginBottom: Spacing.xl,
