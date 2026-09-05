@@ -44,6 +44,7 @@ export default function ProfileScreen() {
     iconBackgroundColor: Colors.primaryLight,
     badge: 'EARN ₹500',
     badgeColor: Colors.primaryLight,
+    onPress: () => router.push('/refer-earn'),
   },
   {
     id: 'support',
