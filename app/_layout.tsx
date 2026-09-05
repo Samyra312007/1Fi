@@ -15,6 +15,7 @@ export default function RootLayout() {
         <Stack.Screen name="support-faqs" />
         <Stack.Screen name="privacy-policy" />
         <Stack.Screen name="terms-conditions" />
+        <Stack.Screen name="product/[id]" />
       </Stack>
     </>
   );

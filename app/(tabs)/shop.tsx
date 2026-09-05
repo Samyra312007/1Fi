@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing, BorderRadius, FontSize } from '../../src/constants/theme';
+import { MarketplaceHeader } from '../../src/components/marketplace/MarketplaceHeader';
+import { ProductList } from '../../src/components/marketplace/ProductList';
 
-type ShopTab = 'brands' | 'stores';
+type ShopTab = 'brands' | 'stores' | 'marketplace';
 
 interface BrandItem {
   name: string;
@@ -122,18 +124,29 @@ export default function ShopScreen() {
             </Text>
             {activeTab === 'stores' && <View style={styles.tabIndicator} />}
           </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'marketplace' && styles.tabActive]}
+            onPress={() => { setActiveTab('marketplace'); setSearchQuery(''); }}
+          >
+            <Text style={[styles.tabText, activeTab === 'marketplace' && styles.tabTextActive]}>
+              1Fi Marketplace
+            </Text>
+            {activeTab === 'marketplace' && <View style={styles.tabIndicator} />}
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.searchContainer}>
-          <Ionicons name="search-outline" size={18} color={Colors.textTertiary} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder={activeTab === 'brands' ? 'Search online stores...' : 'Search stores...'}
-            placeholderTextColor={Colors.textTertiary}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
+        {activeTab !== 'marketplace' && (
+          <View style={styles.searchContainer}>
+            <Ionicons name="search-outline" size={18} color={Colors.textTertiary} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder={activeTab === 'brands' ? 'Search online stores...' : 'Search stores...'}
+              placeholderTextColor={Colors.textTertiary}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+          </View>
+        )}
 
         {activeTab === 'brands' && (
           <>
@@ -182,6 +195,10 @@ export default function ShopScreen() {
               </TouchableOpacity>
             ))}
           </>
+        )}
+
+        {activeTab === 'marketplace' && (
+          <ProductList />
         )}
 
         <View style={styles.bottomSpacer} />
@@ -256,7 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryLight,
   },
   tabText: {
-    fontSize: FontSize.sm,
+    fontSize: 12,
     fontWeight: '600',
     color: Colors.textSecondary,
   },
