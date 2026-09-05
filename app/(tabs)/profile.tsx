@@ -2,19 +2,24 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { Colors, Spacing, BorderRadius, FontSize } from '../../src/constants/theme';
 import { QuickActionItem } from '../../src/components/QuickActionItem';
 import { UserHeader } from '../../src/components/UserHeader';
 import { QuickAction } from '../../src/types';
 
-const QUICK_ACTIONS: QuickAction[] = [
-  {
-    id: 'profile',
-    title: 'Profile details',
-    subtitle: 'Name, contact and KYC info',
-    icon: 'person-outline',
-    iconBackgroundColor: Colors.primaryLight,
-  },
+export default function ProfileScreen() {
+  const router = useRouter();
+
+  const QUICK_ACTIONS: QuickAction[] = [
+    {
+      id: 'profile',
+      title: 'Profile details',
+      subtitle: 'Name, contact and KYC info',
+      icon: 'person-outline',
+      iconBackgroundColor: Colors.primaryLight,
+      onPress: () => router.push('/profile-details'),
+    },
   {
     id: 'purchases',
     title: 'Purchases',
@@ -59,9 +64,8 @@ const QUICK_ACTIONS: QuickAction[] = [
     icon: 'document-text-outline',
     iconBackgroundColor: Colors.primaryLight,
   },
-];
+  ];
 
-export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
