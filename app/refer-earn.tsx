@@ -7,6 +7,16 @@ import { Colors, Spacing, BorderRadius, FontSize } from '../src/constants/theme'
 
 type TierTab = 'eligibility' | 'first_loan';
 
+const IMPORTANT_DETAILS = [
+  'Credits are earned for every unique friend who joins 1Fi using your referral code or link.',
+  'You both earn the moment your friend checks their eligibility — the higher their eligibility, the higher the reward.',
+  'A first-loan bonus lands for both of you when your friend disburses their first loan — the bigger the loan, the bigger the bonus.',
+  'Each friend can trigger both rewards once: one on eligibility check and one on first loan.',
+  'Credits never expire and can be redeemed against your EMIs and processing fees.',
+  'Rewards are credited within 48 hours of the qualifying action being confirmed.',
+  '1Fi may revise, pause, or withdraw the programme at its discretion.',
+];
+
 const TIERS: Record<TierTab, { range: string; credits: number }[]> = {
   eligibility: [
     { range: '₹10K - ₹50K', credits: 50 },
@@ -27,6 +37,7 @@ const TIERS: Record<TierTab, { range: string; credits: number }[]> = {
 export default function ReferEarnScreen() {
   const router = useRouter();
   const [activeTierTab, setActiveTierTab] = useState<TierTab>('eligibility');
+  const [showImportantDetails, setShowImportantDetails] = useState(false);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -177,13 +188,33 @@ export default function ReferEarnScreen() {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.importantDetails}>
-          <View style={styles.importantDetailsLeft}>
-            <Ionicons name="information-circle-outline" size={22} color={Colors.primary} />
-            <Text style={styles.importantDetailsText}>Important Details</Text>
-          </View>
-          <Ionicons name="chevron-down" size={20} color={Colors.textTertiary} />
-        </TouchableOpacity>
+        <View style={styles.importantDetailsCard}>
+          <TouchableOpacity
+            style={styles.importantDetailsHeader}
+            onPress={() => setShowImportantDetails(!showImportantDetails)}
+          >
+            <View style={styles.importantDetailsLeft}>
+              <Ionicons name="information-circle-outline" size={22} color={Colors.primary} />
+              <Text style={styles.importantDetailsText}>Important Details</Text>
+            </View>
+            <Ionicons
+              name={showImportantDetails ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color={Colors.textTertiary}
+            />
+          </TouchableOpacity>
+          {showImportantDetails && (
+            <View style={styles.importantDetailsContent}>
+              <View style={styles.importantDetailsDivider} />
+              {IMPORTANT_DETAILS.map((detail, index) => (
+                <View key={index} style={styles.detailRow}>
+                  <Ionicons name="checkmark" size={18} color={Colors.primary} />
+                  <Text style={styles.detailText}>{detail}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
 
         <View style={styles.bottomSpacer} />
       </ScrollView>
@@ -501,17 +532,20 @@ const styles = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: Colors.border,
   },
-  importantDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  importantDetailsCard: {
     marginHorizontal: Spacing.lg,
     marginTop: Spacing.lg,
     backgroundColor: Colors.surface,
     borderRadius: BorderRadius.lg,
-    padding: Spacing.xl,
     borderWidth: 1,
     borderColor: Colors.border,
+    overflow: 'hidden',
+  },
+  importantDetailsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: Spacing.xl,
   },
   importantDetailsLeft: {
     flexDirection: 'row',
@@ -522,6 +556,26 @@ const styles = StyleSheet.create({
     fontSize: FontSize.md,
     fontWeight: '700',
     color: Colors.text,
+  },
+  importantDetailsContent: {
+    paddingHorizontal: Spacing.xl,
+    paddingBottom: Spacing.xl,
+  },
+  importantDetailsDivider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: Colors.border,
+    marginBottom: Spacing.lg,
+  },
+  detailRow: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    marginBottom: Spacing.md,
+  },
+  detailText: {
+    flex: 1,
+    fontSize: FontSize.sm,
+    color: Colors.textSecondary,
+    lineHeight: 20,
   },
   bottomSpacer: {
     height: 100,
