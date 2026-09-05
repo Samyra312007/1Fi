@@ -26,6 +26,7 @@ export default function ProfileScreen() {
     subtitle: 'Orders, invoices and loan status',
     icon: 'bag-handle-outline',
     iconBackgroundColor: Colors.primaryLight,
+    onPress: () => router.push('/purchases'),
   },
   {
     id: 'pledge',
